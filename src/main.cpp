@@ -283,12 +283,14 @@ void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
       if (m_switch1_state != true) {
         m_switch1_state = true;
         publishSwitchState();
+        Serial.println("INFO message arrived: Switch1 off...");
         //clickSwitch1();
       }
     } else if (payload.equals(String(SWITCH1_OFF))) {
       if (m_switch1_state != false) {
         m_switch1_state = false;
         publishSwitchState();
+        Serial.println("INFO message arrived: Switch1 on...");
       }
     }
   }
@@ -299,12 +301,14 @@ void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
       if (m_switch2_state != true) {
         m_switch2_state = true;
         publishSwitchState();
+        Serial.println("INFO message arrived: Switch2 off...");
         //clickSwitch2();
       }
     } else if (payload.equals(String(SWITCH2_OFF))) {
       if (m_switch2_state != false) {
         m_switch2_state = false;
         publishSwitchState();
+        Serial.println("INFO message arrived: Switch2 on...");
       }
     }
   }
