@@ -97,8 +97,8 @@ const PROGMEM char* WIFI_PASSWORD = "junkilin";
 const PROGMEM char* MQTT_CLIENT_ID = "office";
 const PROGMEM char* MQTT_SERVER_IP = "192.168.0.104";
 const PROGMEM uint16_t MQTT_SERVER_PORT = 1883;
-const PROGMEM char* MQTT_USER = "[Redacted]";
-const PROGMEM char* MQTT_PASSWORD = "[Redacted]";
+const PROGMEM char* MQTT_USER = "homeassistant";
+const PROGMEM char* MQTT_PASSWORD = "raspberry";
 
 // MQTT: topic
 const PROGMEM char* MQTT_MOTION_STATUS_TOPIC = "office/motion/status";
@@ -143,7 +143,6 @@ boolean m_switch1_state = false;
 // SWITCH2 : D6
 const PROGMEM uint8_t SWITCH2_PIN = D6;
 boolean m_switch2_state = false;
-
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
@@ -332,7 +331,7 @@ void reconnect() {
     } else {
       Serial.print("ERROR: failed, rc=");
       Serial.print(client.state());
-      Serial.println("DEBUG: try again in 5 seconds");
+      Serial.println(" DEBUG: try again in 5 seconds");
       // Wait 5 seconds before retrying
       delay(5000);
     }
