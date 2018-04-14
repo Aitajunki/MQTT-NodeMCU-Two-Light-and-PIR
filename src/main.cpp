@@ -85,7 +85,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include <OneButton.h>
+#include <Bounce2.h>
 
 #define MQTT_VERSION MQTT_VERSION_3_1_1
 
@@ -140,14 +140,16 @@ boolean m_light2_state = false; // light2 is turned off by default
 const PROGMEM uint8_t SWITCH1_PIN = D5;
 boolean m_switch1_state = false;
 
+
 // SWITCH2 : D6
 const PROGMEM uint8_t SWITCH2_PIN = D6;
 boolean m_switch2_state = false;
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
-OneButton switch1(SWITCH1_PIN, false); // false : active HIGH
-OneButton switch2(SWITCH2_PIN, false); // false : active HIGH
+Bounce switch1 = Bounce(); // false : active HIGH
+Bounce switch2 = Bounce(); // false : active HIGH
+
 
 // function called to publish the state of the switch (on/off)
 void publishSwitchState() {
@@ -342,9 +344,13 @@ void setup() {
   // init the serial
   Serial.begin(115200);
 
-  // link the click function to be called on a single click event.
-  switch1.attachLongPressStart(clickSwitch1);
-  switch2.attachLongPressStart(clickSwitch2);
+  pinMode(SWITCH1_PIN,INPUT_PULLUP);
+  switch1.attach(SWITCH1_PIN);
+  switch1.interval(5); // interval in ms
+
+  pinMode(SWITCH2_PIN,INPUT_PULLUP);
+  switch2.attach(SWITCH2_PIN);
+  switch2.interval(5); // interval in ms
 
   // init the lights
   pinMode(LIGHT1_PIN, OUTPUT);
@@ -386,11 +392,15 @@ void loop() {
   }
   client.loop();
 
-  // keep watching the push buttons:
-  switch1.tick();
-  // delay(10);
-  switch2.tick();
-  // delay(10);
+  switch1.update();
+  if (not switch1.read()) {
+    clickSwitch1();
+  }
+
+  switch2.update();
+  if (not switch2.read()) {
+    clickSwitch2();
+  }
 
   // read the PIR sensor
   m_pir_value = digitalRead(PIR_PIN);
