@@ -140,7 +140,6 @@ boolean m_light2_state = false; // light2 is turned off by default
 const PROGMEM uint8_t SWITCH1_PIN = D5;
 boolean m_switch1_state = false;
 
-
 // SWITCH2 : D6
 const PROGMEM uint8_t SWITCH2_PIN = D6;
 boolean m_switch2_state = false;
@@ -149,7 +148,6 @@ WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 Bounce switch1 = Bounce(); // false : active HIGH
 Bounce switch2 = Bounce(); // false : active HIGH
-
 
 // function called to publish the state of the switch (on/off)
 void publishSwitchState() {
@@ -418,5 +416,4 @@ void loop() {
       m_pir_state = LOW;
     }
   }
-  // delay(10);
 }
