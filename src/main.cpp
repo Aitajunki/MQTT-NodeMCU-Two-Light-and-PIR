@@ -90,7 +90,7 @@
 #define MQTT_VERSION MQTT_VERSION_3_1_1
 
 // Wifi: SSID and password
-const PROGMEM char* WIFI_SSID = "HomeAssistantMQTT";
+const PROGMEM char* WIFI_SSID = "ApBelkinWIFi";
 const PROGMEM char* WIFI_PASSWORD = "junkilin";
 
 // MQTT: ID, server IP, port, username and password
