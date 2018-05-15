@@ -90,7 +90,7 @@
 #define MQTT_VERSION MQTT_VERSION_3_1_1
 
 // Wifi: SSID and password
-const PROGMEM char* WIFI_SSID = "HomeAssistantMQTT";
+const PROGMEM char* WIFI_SSID = "ApBelkinWIFi";
 const PROGMEM char* WIFI_PASSWORD = "junkilin";
 
 // MQTT: ID, server IP, port, username and password
@@ -125,7 +125,7 @@ const PROGMEM char* SWITCH2_OFF = "OFF";
 
 // PIR : D1
 const PROGMEM uint8_t PIR_PIN = D1;
-uint8_t m_pir_state = LOW; // no motion detected
+uint8_t m_pir_state = HIGH; // no motion detected
 uint8_t m_pir_value = 0;
 
 // LIGHT1 : D2
@@ -140,7 +140,6 @@ boolean m_light2_state = false; // light2 is turned off by default
 const PROGMEM uint8_t SWITCH1_PIN = D5;
 boolean m_switch1_state = false;
 
-
 // SWITCH2 : D6
 const PROGMEM uint8_t SWITCH2_PIN = D6;
 boolean m_switch2_state = false;
@@ -149,7 +148,6 @@ WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 Bounce switch1 = Bounce(); // false : active HIGH
 Bounce switch2 = Bounce(); // false : active HIGH
-
 
 // function called to publish the state of the switch (on/off)
 void publishSwitchState() {
@@ -285,7 +283,6 @@ void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
         m_switch1_state = true;
         publishSwitchState();
         Serial.println("INFO message arrived: Switch1 off...");
-        //clickSwitch1();
       }
     } else if (payload.equals(String(SWITCH1_OFF))) {
       if (m_switch1_state != false) {
@@ -393,12 +390,12 @@ void loop() {
   client.loop();
 
   switch1.update();
-  if (not switch1.read()) {
+  if (switch1.fell()) {
     clickSwitch1();
   }
 
   switch2.update();
-  if (not switch2.read()) {
+  if (switch2.fell()) {
     clickSwitch2();
   }
 
@@ -418,5 +415,4 @@ void loop() {
       m_pir_state = LOW;
     }
   }
-  // delay(10);
 }
